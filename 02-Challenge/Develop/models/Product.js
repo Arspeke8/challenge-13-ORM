@@ -16,18 +16,18 @@ Product.init(
       autoIncrement: true,
     },
     product_name: {
-      type: DataTypes.String,
+      type: DataTypes.STRING,
       allowNull: false,
     },
     price: {
-      type: DataTypes.Decimal,
+      type: DataTypes.DECIMAL,
       allowNull: false,
       validate: {
         isDecimal: true,
       },
     },
     stock: {
-      type: dataTypes.INTEGER,
+      type: DataTypes.INTEGER,
       allowNull: false,
       defaultValue: 10,
       validate: {
