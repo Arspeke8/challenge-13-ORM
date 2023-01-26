@@ -6,53 +6,73 @@ const { Product, Category, Tag, ProductTag } = require('../../models');
 // get all products
 router.get('/', (req, res) => {
   // find all products
-
-    // be sure to include its associated Category and Tag data
-  Product.findAll({ 
+  // be sure to include its associated Category and Tag data
+  product.findAll({
     include: [
       {
         model: Category,
-        attributes: ['id', 'category_name']
+        attributes: ['id', 'category_name'],
       },
       {
         model: Tag,
-        attributes: ['id', 'tag_name']
-      }
-    ]
+        attributes: ['id', 'tag_name'],
+      },
+    ],
   })
-  .then(dbProductData => res.json(dbProductData))
-  .catch(err => {
-    console.log(err);
-    res.status(500).json(err);
-  }
+    .then((product) => {
+      return res.status(200).json(product);
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    }
   );
-
 });
 
 // get one product
 router.get('/:id', (req, res) => {
-  // find a single product by its `id` 
-        this.searchParams.set('id', id);
-
-
-
+  // find a single product by its `id`
   // be sure to include its associated Category and Tag data
+  product.findByPk(req.params.id, {
+    include: [
+      {
+        model: Category,
+        attributes: ['id', 'category_name'],
+      },
+      {
+        model: Tag,
+        attributes: ['id', 'tag_name'],
+      },
+    ],
+  })
+    .then((product) => {
+      if (!product) {
+        return res.status(404).json({ message: "Product not found" });
+      }
+      return res.status(200).json(product);
+    })
+    .catch((err) => {
+      return res.status(500).send(err);
+    });
 });
 
-Product.findByPk(req.params.id, {
-  include: [Category, Tag]
-  })
-  .then(product => {
-  res.json(product)
-  })
-  .catch(err => {
-  console.log(err)
-  res.status(500).json(err)
-  })  
-  
 // create new product
 router.post('/', (req, res) => {
-  /* req.body should look like this...
+  const { product_name, price, stock, category_id, tagIds } = req.body;
+  Product.create({
+    product_name,
+    price,
+    stock,
+    category_id: req.body.category_id,
+  })
+    .then((product) => { if (tagIds) {
+      product.addTags(tagIds);
+}
+return res.status(201).json(product);
+}).catch(err => {
+return res.status(500).send(err);
+});
+});
+   /* req.body should look like this...
     {
       product_name: "Basketball",
       price: 200.00,
@@ -80,7 +100,6 @@ router.post('/', (req, res) => {
       console.log(err);
       res.status(400).json(err);
     });
-});
 
 // update product
 router.put('/:id', (req, res) => {
@@ -126,6 +145,17 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', (req, res) => {
   // delete one product by its `id` value
-});
+  Product.destroy({
+    where: {
+      id: req.params.id,
+    },
+  })
+  .then(() => res.json({ message: 'Product deleted successfully' }))
+  .catch(err => {
+  res.status(400).json(err);
+  });
+  });
+
+
 
 module.exports = router;
