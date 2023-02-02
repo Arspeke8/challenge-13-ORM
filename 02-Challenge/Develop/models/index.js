@@ -6,18 +6,19 @@ const ProductTag = require('./ProductTag');
 
 // Products belongsTo Category
 
-  Product.belongsTo(Category, {
-    foreignKey: 'category_id',
-    onDelete: 'CASCADE',
-  });
+  Product.belongsTo(Category);
+    // foreignKey: 'category_id',
+    // onDelete: 'CASCADE',
+  // });
 
 
 // Categories have many Products
 
-  Category.hasMany(Product, {
-    foreignKey: 'category_id',
-    onDelete: 'CASCADE',
-  });
+  Category.hasMany(Product), 
+  // {
+  //   foreignKey: 'category_id',
+  //   onDelete: 'CASCADE',
+  // });
 
 
 // Products belongToMany Tags (through ProductTag)
@@ -25,7 +26,7 @@ const ProductTag = require('./ProductTag');
   Product.belongsToMany(Tag, {
     through: ProductTag,
     foreignKey: 'product_id',
-    onDelete: 'CASCADE',
+    // onDelete: 'CASCADE',
   });
 
 
@@ -34,7 +35,7 @@ const ProductTag = require('./ProductTag');
   Tag.belongsToMany(Product, {
     through: ProductTag,
     foreignKey: 'tag_id', 
-    onDelete: 'CASCADE',
+    // onDelete: 'CASCADE',
   });
   
 
