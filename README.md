@@ -18,7 +18,7 @@ THEN I am able to successfully create, update, and delete data in my database
 
 # Learned how to use sequelize to create a database and connect it to an express server
 
-# Video Link: 
+# Video Link: https://drive.google.com/file/d/1qPntjkoF_nTcBKlW2JrlJgh8tn7MG20T/view
 
 # Ryan Dong
 
